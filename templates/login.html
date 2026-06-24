@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="mx-auto grid min-h-[calc(100vh-180px)] max-w-7xl items-center gap-10 px-5 py-12 lg:grid-cols-2 lg:px-8">
+    <div>
+        <p class="text-sm font-black uppercase tracking-[0.25em] text-pine">Secure Access</p>
+        <h1 class="mt-4 font-display text-5xl font-extrabold tracking-tight">One login for users and admins.</h1>
+        <p class="mt-5 max-w-xl text-lg leading-8 text-slate-700">Admins are redirected to the admin dashboard automatically. Users go to their resume analysis history.</p>
+        <div class="mt-8 rounded-3xl bg-white/75 p-5 text-sm font-semibold text-slate-700 shadow-sm">
+            <p class="font-black text-ink">Seeded admin account</p>
+            <p class="mt-1">Email: admin@resumeai.local</p>
+            <p>Password: Admin@123</p>
+        </div>
+    </div>
+
+    <form method="POST" class="rounded-[2rem] border border-white/80 bg-white/85 p-8 shadow-soft">
+        <h2 class="font-display text-3xl font-extrabold">Login</h2>
+        <p class="mt-2 text-sm font-semibold text-slate-500">Access analyzer, history, or admin data.</p>
+
+        <label class="mt-7 block text-sm font-black uppercase tracking-[0.2em] text-slate-500">Email</label>
+        <input type="email" name="email" required class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-5 py-4 outline-none focus:border-pine" placeholder="you@example.com">
+
+        <label class="mt-5 block text-sm font-black uppercase tracking-[0.2em] text-slate-500">Password</label>
+        <input type="password" name="password" required class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-5 py-4 outline-none focus:border-pine" placeholder="Your password">
+
+        <button class="mt-7 w-full rounded-2xl bg-ink px-8 py-4 font-extrabold text-white shadow-soft hover:bg-pine">Login</button>
+        <p class="mt-5 text-center text-sm font-semibold text-slate-600">No account? <a class="font-black text-pine" href="{{ url_for('register') }}">Register here</a></p>
+    </form>
+</section>
+{% endblock %}

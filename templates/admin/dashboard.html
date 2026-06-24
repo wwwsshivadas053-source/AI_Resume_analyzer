@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="mx-auto max-w-7xl px-5 py-12 lg:px-8">
+    <div class="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+        <div>
+            <p class="text-sm font-black uppercase tracking-[0.25em] text-brass">Admin Dashboard</p>
+            <h1 class="mt-3 font-display text-5xl font-extrabold tracking-tight">Control center</h1>
+        </div>
+        <div class="flex flex-col gap-3 sm:flex-row">
+            <a href="{{ url_for('admin_users') }}" class="rounded-2xl bg-ink px-6 py-3 text-center font-extrabold text-white hover:bg-pine">Users</a>
+            <a href="{{ url_for('admin_feedback') }}" class="rounded-2xl bg-white px-6 py-3 text-center font-extrabold text-ink shadow-sm hover:bg-amber-50">Feedback</a>
+            <a href="{{ url_for('admin_logs') }}" class="rounded-2xl bg-white px-6 py-3 text-center font-extrabold text-ink shadow-sm hover:bg-amber-50">Logs</a>
+        </div>
+    </div>
+
+    <div class="mt-10 grid gap-5 md:grid-cols-4">
+        <div class="rounded-[1.75rem] bg-ink p-6 text-white shadow-soft">
+            <p class="text-sm font-black uppercase tracking-[0.2em] text-amber-200">Users</p>
+            <p class="mt-3 text-5xl font-black">{{ users }}</p>
+        </div>
+        <div class="rounded-[1.75rem] bg-pine p-6 text-white shadow-soft">
+            <p class="text-sm font-black uppercase tracking-[0.2em] text-emerald-100">Feedback</p>
+            <p class="mt-3 text-5xl font-black">{{ feedbacks }}</p>
+        </div>
+        <div class="rounded-[1.75rem] bg-tide p-6 text-white shadow-soft">
+            <p class="text-sm font-black uppercase tracking-[0.2em] text-cyan-100">Analyses</p>
+            <p class="mt-3 text-5xl font-black">{{ resumes }}</p>
+        </div>
+        <div class="rounded-[1.75rem] bg-brass p-6 text-white shadow-soft">
+            <p class="text-sm font-black uppercase tracking-[0.2em] text-amber-100">Avg ATS</p>
+            <p class="mt-3 text-5xl font-black">{{ average_score }}%</p>
+        </div>
+    </div>
+
+    <div class="mt-10 rounded-[2rem] border border-white/80 bg-white/85 p-7 shadow-soft">
+        <h2 class="font-display text-3xl font-extrabold">Recent analyzer logs</h2>
+        <div class="mt-6 overflow-x-auto">
+            <table class="w-full min-w-[760px] text-left text-sm">
+                <thead class="text-xs uppercase tracking-[0.2em] text-slate-500">
+                    <tr>
+                        <th class="py-3">User</th>
+                        <th>File</th>
+                        <th>ATS</th>
+                        <th>Match</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    {% for log in recent_logs %}
+                        <tr>
+                            <td class="py-4 font-bold">{{ log.user.username if log.user else 'Deleted user' }}</td>
+                            <td>{{ log.filename }}</td>
+                            <td>{{ log.ats_score }}%</td>
+                            <td>{{ log.match_score or 0 }}%</td>
+                            <td>{{ log.created_at.strftime('%d %b %Y') }}</td>
+                        </tr>
+                    {% else %}
+                        <tr><td class="py-6 text-slate-500" colspan="5">No analyzer logs yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

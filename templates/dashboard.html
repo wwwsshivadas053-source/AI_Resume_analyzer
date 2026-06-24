@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="mx-auto max-w-7xl px-5 py-12 lg:px-8">
+    <div class="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+        <div>
+            <p class="text-sm font-black uppercase tracking-[0.25em] text-pine">User Dashboard</p>
+            <h1 class="mt-3 font-display text-5xl font-extrabold tracking-tight">My resume analyses</h1>
+        </div>
+        <a href="{{ url_for('analyzer') }}" class="rounded-2xl bg-ink px-7 py-4 text-center font-extrabold text-white shadow-soft hover:bg-pine">New Analysis</a>
+    </div>
+
+    <div class="mt-10 grid gap-5">
+        {% for item in analyses %}
+            <article class="rounded-[1.75rem] border border-white/80 bg-white/85 p-6 shadow-sm">
+                <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+                    <div>
+                        <p class="text-sm font-bold text-slate-500">{{ item.created_at.strftime('%d %b %Y, %I:%M %p') }}</p>
+                        <h2 class="mt-2 text-2xl font-black">{{ item.filename }}</h2>
+                        <p class="mt-2 text-sm font-semibold text-slate-600">ATS score: {{ item.ats_score }}% | JD match: {{ item.match_score or 0 }}%</p>
+                    </div>
+                    <div class="flex flex-col gap-3 sm:flex-row">
+                        <a href="{{ url_for('download_report', id=item.id) }}" class="rounded-xl bg-pine px-5 py-3 text-center font-bold text-white hover:bg-ink">Download PDF</a>
+                        <a href="{{ url_for('rewrite', id=item.id) }}" class="rounded-xl border border-ink/10 bg-white px-5 py-3 text-center font-bold text-ink hover:border-ink">Rewrite</a>
+                    </div>
+                </div>
+            </article>
+        {% else %}
+            <div class="rounded-[2rem] border border-white/80 bg-white/80 p-10 text-center shadow-soft">
+                <h2 class="font-display text-3xl font-extrabold">No analyses yet.</h2>
+                <p class="mt-3 text-slate-600">Upload your first PDF resume to generate ATS scoring and suggestions.</p>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

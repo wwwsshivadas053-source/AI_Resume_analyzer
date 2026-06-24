@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="mx-auto max-w-7xl px-5 py-16 lg:px-8">
+    <div class="max-w-3xl">
+        <p class="text-sm font-black uppercase tracking-[0.25em] text-brass">Project Master Document</p>
+        <h1 class="mt-4 font-display text-5xl font-extrabold tracking-tight">Resume Analyzer</h1>
+        <p class="mt-5 text-lg leading-8 text-slate-700">This application provides role-based authentication, PDF resume analysis, ATS scoring, feedback capture, and admin management for users, feedback, and analyzer logs.</p>
+    </div>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div class="rounded-[1.75rem] border border-white/80 bg-white/80 p-6 shadow-sm">
+            <p class="text-2xl font-black text-ink">Auth</p>
+            <p class="mt-3 text-slate-600">Register/login with role-based redirects for users and admins.</p>
+        </div>
+        <div class="rounded-[1.75rem] border border-white/80 bg-white/80 p-6 shadow-sm">
+            <p class="text-2xl font-black text-ink">Analyzer</p>
+            <p class="mt-3 text-slate-600">Upload PDF, extract text, calculate ATS and JD match scores, then generate suggestions.</p>
+        </div>
+        <div class="rounded-[1.75rem] border border-white/80 bg-white/80 p-6 shadow-sm">
+            <p class="text-2xl font-black text-ink">Feedback</p>
+            <p class="mt-3 text-slate-600">Home-page feedback form stores submissions in SQLite.</p>
+        </div>
+        <div class="rounded-[1.75rem] border border-white/80 bg-white/80 p-6 shadow-sm">
+            <p class="text-2xl font-black text-ink">Admin</p>
+            <p class="mt-3 text-slate-600">CRUD controls for users, feedback, and analyzer logs.</p>
+        </div>
+        <div class="rounded-[1.75rem] border border-white/80 bg-white/80 p-6 shadow-sm">
+            <p class="text-2xl font-black text-ink">UI</p>
+            <p class="mt-3 text-slate-600">Responsive Tailwind cards, forms, gradients, and premium dashboard layouts.</p>
+        </div>
+        <div class="rounded-[1.75rem] border border-white/80 bg-white/80 p-6 shadow-sm">
+            <p class="text-2xl font-black text-ink">Database</p>
+            <p class="mt-3 text-slate-600">SQLite database seeded with an admin account for the shared login form.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

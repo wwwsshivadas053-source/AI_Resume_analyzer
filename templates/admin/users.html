@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="mx-auto max-w-7xl px-5 py-12 lg:px-8">
+    <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div>
+            <p class="text-sm font-black uppercase tracking-[0.25em] text-pine">Admin</p>
+            <h1 class="mt-3 font-display text-5xl font-extrabold tracking-tight">Manage users</h1>
+        </div>
+        <a href="{{ url_for('admin_dashboard') }}" class="rounded-2xl bg-white px-6 py-3 text-center font-extrabold text-ink shadow-sm">Back to Admin</a>
+    </div>
+
+    <form method="POST" class="grid gap-4 rounded-[2rem] border border-white/80 bg-white/85 p-6 shadow-soft lg:grid-cols-[1fr_1fr_1fr_0.7fr_auto]">
+        <input name="username" required class="rounded-2xl border border-slate-200 px-5 py-4 outline-none focus:border-pine" placeholder="Name">
+        <input name="email" type="email" required class="rounded-2xl border border-slate-200 px-5 py-4 outline-none focus:border-pine" placeholder="Email">
+        <input name="password" type="password" minlength="6" required class="rounded-2xl border border-slate-200 px-5 py-4 outline-none focus:border-pine" placeholder="Password">
+        <select name="role" class="rounded-2xl border border-slate-200 px-5 py-4 font-bold outline-none focus:border-pine">
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+        </select>
+        <button class="rounded-2xl bg-ink px-6 py-4 font-extrabold text-white hover:bg-pine">Create</button>
+    </form>
+
+    <div class="mt-8 overflow-x-auto rounded-[2rem] border border-white/80 bg-white/85 p-2 shadow-soft">
+        <table class="w-full min-w-[860px] text-left text-sm">
+            <thead class="text-xs uppercase tracking-[0.2em] text-slate-500">
+                <tr>
+                    <th class="px-5 py-4">Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Joined</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+                {% for user in users %}
+                    <tr>
+                        <td class="px-5 py-4 font-black">{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('update_user_role', id=user.id) }}" class="flex gap-2">
+                                <select name="role" class="rounded-xl border border-slate-200 px-3 py-2 font-bold">
+                                    <option value="user" {% if user.role == 'user' %}selected{% endif %}>User</option>
+                                    <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>
+                                </select>
+                                <button class="rounded-xl bg-slate-100 px-3 py-2 font-bold hover:bg-amber-100">Save</button>
+                            </form>
+                        </td>
+                        <td>{{ user.created_at.strftime('%d %b %Y') }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('delete_user', id=user.id) }}">
+                                <button class="rounded-xl bg-red-50 px-4 py-2 font-bold text-red-700 hover:bg-red-100">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

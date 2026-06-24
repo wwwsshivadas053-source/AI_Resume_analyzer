@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mx-auto py-12">
+
+<h1 class="text-4xl font-bold mb-10">
+
+Manage Users
+
+</h1>
+
+<table class="w-full bg-white rounded-xl shadow">
+
+<thead>
+
+<tr>
+
+<th class="p-4">ID</th>
+<th>Username</th>
+<th>Email</th>
+<th>Role</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for user in users %}
+
+<tr class="border-t">
+
+<td class="p-4">{{ user.id }}</td>
+
+<td>{{ user.username }}</td>
+
+<td>{{ user.email }}</td>
+
+<td>{{ user.role }}</td>
+
+<td>
+
+<a
+href="/admin/delete-user/{{ user.id }}"
+class="bg-red-500 text-white px-3 py-2 rounded">
+
+Delete
+
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="mx-auto grid max-w-7xl items-center gap-12 px-5 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:py-24">
+    <div>
+        <div class="mb-6 inline-flex rounded-full border border-amber-300/70 bg-white/70 px-4 py-2 text-sm font-extrabold text-brass shadow-sm">
+            Premium ATS scoring + Gemini resume guidance
+        </div>
+        <h1 class="font-display text-5xl font-extrabold leading-tight tracking-tight text-ink md:text-7xl">
+            Build a resume that gets past filters and earns interviews.
+        </h1>
+        <p class="mt-7 max-w-2xl text-lg leading-8 text-slate-700">
+            Upload a PDF, compare it against a job description, get an ATS score, and receive targeted suggestions for skills, structure, keywords, and impact.
+        </p>
+        <div class="mt-9 flex flex-col gap-4 sm:flex-row">
+            <a href="{{ url_for('analyzer') }}" class="rounded-2xl bg-ink px-8 py-4 text-center font-extrabold text-white shadow-soft hover:bg-pine">Analyze Resume</a>
+            <a href="{{ url_for('about') }}" class="rounded-2xl border border-ink/10 bg-white/70 px-8 py-4 text-center font-extrabold text-ink hover:border-ink">View Modules</a>
+        </div>
+        <div class="mt-10 grid gap-4 sm:grid-cols-3">
+            <div class="rounded-3xl bg-white/75 p-5 shadow-sm">
+                <p class="text-3xl font-black text-pine">ATS</p>
+                <p class="mt-1 text-sm font-semibold text-slate-600">Keyword and structure scoring</p>
+            </div>
+            <div class="rounded-3xl bg-white/75 p-5 shadow-sm">
+                <p class="text-3xl font-black text-tide">AI</p>
+                <p class="mt-1 text-sm font-semibold text-slate-600">Gemini-powered suggestions</p>
+            </div>
+            <div class="rounded-3xl bg-white/75 p-5 shadow-sm">
+                <p class="text-3xl font-black text-brass">Admin</p>
+                <p class="mt-1 text-sm font-semibold text-slate-600">Users, feedback, logs</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="rounded-[2rem] border border-white/80 bg-white/75 p-6 shadow-soft backdrop-blur">
+        <div class="rounded-[1.5rem] bg-ink p-6 text-white">
+            <p class="text-sm font-bold uppercase tracking-[0.25em] text-amber-200">Resume Health</p>
+            <div class="mt-6 grid grid-cols-2 gap-4">
+                <div class="rounded-2xl bg-white/10 p-5">
+                    <p class="text-4xl font-black">86%</p>
+                    <p class="mt-2 text-sm text-slate-200">ATS readiness</p>
+                </div>
+                <div class="rounded-2xl bg-white/10 p-5">
+                    <p class="text-4xl font-black">72%</p>
+                    <p class="mt-2 text-sm text-slate-200">JD match</p>
+                </div>
+            </div>
+            <div class="mt-6 space-y-3">
+                <div class="rounded-2xl bg-white p-4 text-ink">
+                    <p class="font-extrabold">Missing Skills</p>
+                    <p class="text-sm text-slate-600">Add SQL, AWS, measurable project outcomes.</p>
+                </div>
+                <div class="rounded-2xl bg-amber-100 p-4 text-ink">
+                    <p class="font-extrabold">Suggestion</p>
+                    <p class="text-sm text-slate-700">Rewrite experience bullets with action + metric + business result.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mx-auto max-w-7xl px-5 pb-16 lg:px-8">
+    <div class="grid gap-8 rounded-[2rem] border border-white/80 bg-white/75 p-6 shadow-soft lg:grid-cols-[0.8fr_1.2fr] lg:p-10">
+        <div>
+            <p class="text-sm font-black uppercase tracking-[0.25em] text-pine">Feedback</p>
+            <h2 class="mt-3 font-display text-4xl font-extrabold">Tell us what to improve.</h2>
+            <p class="mt-4 text-slate-600">Feedback is stored in the database and visible to admins from the dashboard.</p>
+        </div>
+        <form action="{{ url_for('feedback') }}" method="POST" class="grid gap-4">
+            <div class="grid gap-4 md:grid-cols-2">
+                <input name="name" required class="rounded-2xl border border-slate-200 bg-white px-5 py-4 outline-none focus:border-pine" placeholder="Your name">
+                <input name="email" type="email" required class="rounded-2xl border border-slate-200 bg-white px-5 py-4 outline-none focus:border-pine" placeholder="Email address">
+            </div>
+            <textarea name="message" required rows="5" class="rounded-2xl border border-slate-200 bg-white px-5 py-4 outline-none focus:border-pine" placeholder="Share your feedback"></textarea>
+            <button class="rounded-2xl bg-pine px-7 py-4 font-extrabold text-white hover:bg-ink">Submit Feedback</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

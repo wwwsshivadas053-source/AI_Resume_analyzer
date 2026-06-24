@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% extends 'base.html' %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto py-12">
+
+<div class="bg-white rounded-3xl shadow-xl p-10">
+
+<h2 class="text-4xl font-bold mb-8">
+My Profile
+</h2>
+
+<form method="POST">
+
+<textarea
+name="bio"
+rows="5"
+class="w-full border p-4 rounded-xl mb-4">
+
+{{ current_user.bio }}
+
+</textarea>
+
+<input
+type="text"
+name="linkedin"
+value="{{ current_user.linkedin }}"
+placeholder="LinkedIn URL"
+class="w-full border p-4 rounded-xl mb-4">
+
+<input
+type="text"
+name="github"
+value="{{ current_user.github }}"
+placeholder="GitHub URL"
+class="w-full border p-4 rounded-xl mb-4">
+
+<button
+class="bg-blue-600 text-white px-8 py-4 rounded-xl">
+
+Save Profile
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+{% endblock %}
+</body>
+</html>

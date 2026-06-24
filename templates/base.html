@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title or site_name }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ["Manrope", "sans-serif"],
+                        display: ["Sora", "sans-serif"]
+                    },
+                    colors: {
+                        ink: "#101828",
+                        clay: "#f4efe7",
+                        brass: "#c78538",
+                        pine: "#0f4c3a",
+                        tide: "#0e7490"
+                    },
+                    boxShadow: {
+                        soft: "0 24px 80px rgba(16, 24, 40, 0.12)"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen bg-[radial-gradient(circle_at_top_left,#fff8e8,transparent_32%),linear-gradient(135deg,#f8fafc_0%,#edf7f4_45%,#fff7ed_100%)] text-ink antialiased">
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+        <div class="absolute -left-24 top-28 h-80 w-80 rounded-full bg-amber-200/35 blur-3xl"></div>
+        <div class="absolute right-0 top-0 h-96 w-96 rounded-full bg-cyan-200/30 blur-3xl"></div>
+        <div class="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-emerald-200/30 blur-3xl"></div>
+    </div>
+
+    <header class="sticky top-0 z-30 border-b border-white/60 bg-white/75 backdrop-blur-xl">
+        <nav class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
+            <a href="{{ url_for('home') }}" class="flex items-center gap-3">
+                <span class="grid h-11 w-11 place-items-center rounded-2xl bg-ink text-lg font-black text-white shadow-soft">RA</span>
+                <span>
+                    <span class="block font-display text-xl font-extrabold tracking-tight">{{ site_name }}</span>
+                    <span class="block text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">ATS Intelligence</span>
+                </span>
+            </a>
+            <div class="hidden items-center gap-7 text-sm font-bold text-slate-700 md:flex">
+                <a class="hover:text-pine" href="{{ url_for('home') }}">Home</a>
+                <a class="hover:text-pine" href="{{ url_for('about') }}">About</a>
+                {% if current_user.is_authenticated %}
+                    <a class="hover:text-pine" href="{{ url_for('analyzer') }}">Analyzer</a>
+                    {% if current_user.role == 'admin' %}
+                        <a class="hover:text-pine" href="{{ url_for('admin_dashboard') }}">Admin</a>
+                    {% else %}
+                        <a class="hover:text-pine" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    {% endif %}
+                    <a class="rounded-full border border-ink/10 px-5 py-2 hover:border-ink hover:text-ink" href="{{ url_for('logout') }}">Logout</a>
+                {% else %}
+                    <a class="hover:text-pine" href="{{ url_for('login') }}">Login</a>
+                    <a class="rounded-full bg-ink px-5 py-2 text-white shadow-soft hover:bg-pine" href="{{ url_for('register') }}">Register</a>
+                {% endif %}
+            </div>
+        </nav>
+        <div class="mx-auto flex max-w-7xl gap-3 overflow-x-auto px-5 pb-4 text-sm font-bold text-slate-700 md:hidden">
+            <a class="rounded-full bg-white px-4 py-2" href="{{ url_for('home') }}">Home</a>
+            <a class="rounded-full bg-white px-4 py-2" href="{{ url_for('about') }}">About</a>
+            {% if current_user.is_authenticated %}
+                <a class="rounded-full bg-white px-4 py-2" href="{{ url_for('analyzer') }}">Analyzer</a>
+                {% if current_user.role == 'admin' %}
+                    <a class="rounded-full bg-white px-4 py-2" href="{{ url_for('admin_dashboard') }}">Admin</a>
+                {% else %}
+                    <a class="rounded-full bg-white px-4 py-2" href="{{ url_for('dashboard') }}">Dashboard</a>
+                {% endif %}
+                <a class="rounded-full bg-ink px-4 py-2 text-white" href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a class="rounded-full bg-white px-4 py-2" href="{{ url_for('login') }}">Login</a>
+                <a class="rounded-full bg-ink px-4 py-2 text-white" href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </div>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="mx-auto mt-5 max-w-7xl px-5 lg:px-8">
+                {% for category, message in messages %}
+                    <div class="mb-3 rounded-2xl border px-5 py-4 text-sm font-semibold shadow-sm {% if category == 'error' %}border-red-200 bg-red-50 text-red-700{% else %}border-emerald-200 bg-emerald-50 text-emerald-800{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="mt-20 border-t border-white/70 bg-white/60">
+        <div class="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-8 text-sm text-slate-600 md:flex-row md:items-center md:justify-between lg:px-8">
+            <p class="font-semibold">ResumeAI Pro builds ATS scoring, improvement guidance, and admin controls into one workflow.</p>
+            <p>Admin seed: admin@resumeai.local / Admin@123</p>
+        </div>
+    </footer>
+</body>
+</html>
