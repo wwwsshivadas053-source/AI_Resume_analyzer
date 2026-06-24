@@ -1,8 +1,8 @@
 import os
 
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY","")
-HAS_REAL_GEMINI_KEY = GEMINI_API_KEY and GEMINI_API_KEY != YOUR_GEMINI_API_KEY
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+HAS_REAL_GEMINI_KEY = GEMINI_API_KEY and GEMINI_API_KEY != "YOUR_GEMINI_API_KEY"
 
 if HAS_REAL_GEMINI_KEY:
     import google.generativeai as genai
