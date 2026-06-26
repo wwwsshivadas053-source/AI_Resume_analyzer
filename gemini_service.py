@@ -1,24 +1,28 @@
-
-# resume_ai.py
+import os
 
 # ==========================================================
-# GEMINI CONFIGURATION (NO .ENV REQUIRED)
+# GEMINI CONFIGURATION (ENVIRONMENT VARIABLE)
 # ==========================================================
-
-GEMINI_API_KEY = "AQ.Ab8RN6J4K7Df_l8_l66r1Yrkwp_Hn__-JS50xr-koUgHChJAJQ"
 
 model = None
 
 try:
     import google.generativeai as genai
 
+    GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+
+    if not GEMINI_API_KEY:
+        raise ValueError(
+            "GEMINI_API_KEY environment variable not found."
+        )
+
     genai.configure(api_key=GEMINI_API_KEY)
 
-    # Recommended model
+    # Gemini model
     model = genai.GenerativeModel("gemini-1.5-flash")
 
 except Exception as e:
-    print("Gemini initialization failed:", e)
+    print(f"Gemini initialization failed: {e}")
     model = None
 
 
@@ -57,9 +61,7 @@ def _local_resume_analysis(text):
 
     for keyword in keywords:
         if keyword in lowered:
-            strengths.append(
-                f"Includes keyword: {keyword}"
-            )
+            strengths.append(f"Includes keyword: {keyword}")
         else:
             missing.append(keyword)
 
@@ -72,46 +74,44 @@ def _local_resume_analysis(text):
         "Add a professional summary.",
         "Use action verbs in experience section.",
         "Include measurable achievements.",
-        "Tailor keywords to target job description.",
-        "Organize skills by category."
+        "Tailor keywords to the target job description.",
+        "Organize skills into categories."
     ]
 
     ats_score = max(
         40,
         min(
             95,
-            60
-            + len(strengths) * 3
-            - len(weaknesses) * 2
+            60 + len(strengths) * 3 - len(weaknesses) * 2
         )
     )
 
-    report = f"""
-ATS Score: {ats_score}/100
+    report = f"ATS Score: {ats_score}/100\n\n"
 
-Strengths:
-"""
-
-    for item in strengths[:6]:
-        report += f"\n• {item}"
-
-    report += "\n\nWeaknesses:"
-
-    for item in weaknesses[:6]:
-        report += f"\n• {item}"
-
-    report += "\n\nMissing Skills:"
-
-    if missing:
-        for item in missing[:10]:
-            report += f"\n• {item}"
+    report += "Strengths:\n"
+    if strengths:
+        for s in strengths:
+            report += f"• {s}\n"
     else:
-        report += "\n• No major missing keywords found."
+        report += "• None\n"
 
-    report += "\n\nSuggestions:"
+    report += "\nWeaknesses:\n"
+    if weaknesses:
+        for w in weaknesses:
+            report += f"• {w}\n"
+    else:
+        report += "• None\n"
 
-    for item in suggestions:
-        report += f"\n• {item}"
+    report += "\nMissing Skills:\n"
+    if missing:
+        for m in missing:
+            report += f"• {m}\n"
+    else:
+        report += "• No major missing keywords found.\n"
+
+    report += "\nSuggestions:\n"
+    for s in suggestions:
+        report += f"• {s}\n"
 
     return report
 
@@ -125,15 +125,15 @@ def analyze_resume(text):
     if not text.strip():
         return "Resume text is empty."
 
-    if not model:
+    if model is None:
         return _local_resume_analysis(text)
 
     prompt = f"""
-You are a senior ATS recruiter.
+You are an experienced ATS recruiter.
 
 Analyze the following resume.
 
-Return ONLY:
+Return ONLY in this format:
 
 ATS Score: X/100
 
@@ -157,16 +157,15 @@ Resume:
     try:
         response = model.generate_content(prompt)
 
-        if hasattr(response, "text"):
-            return response.text
+        if response and hasattr(response, "text"):
+            return response.text.strip()
 
         return _local_resume_analysis(text)
 
-    except Exception as exc:
-
+    except Exception as e:
         return (
             _local_resume_analysis(text)
-            + f"\n\nGemini note: {exc}"
+            + f"\n\nGemini note: {e}"
         )
 
 
@@ -179,26 +178,26 @@ def rewrite_resume(text):
     if not text.strip():
         return "Resume text is empty."
 
-    if not model:
+    if model is None:
         return (
-            "Gemini API not available.\n\n"
-            "Resume Content:\n\n"
+            "Gemini API unavailable.\n\n"
             + text
         )
 
     prompt = f"""
 You are a professional resume writer.
 
-Rewrite this resume to improve:
+Rewrite this resume while:
 
-1. ATS Score
-2. Grammar
-3. Professional Summary
-4. Skills Section
-5. Project Descriptions
-6. Experience Section
+1. Improving ATS score
+2. Fixing grammar
+3. Adding a strong professional summary
+4. Improving skills section
+5. Improving project descriptions
+6. Improving experience section
 
-Keep all original information.
+Do NOT invent information.
+Keep all original facts.
 
 Resume:
 
@@ -206,16 +205,15 @@ Resume:
 """
 
     try:
-
         response = model.generate_content(prompt)
 
-        if hasattr(response, "text"):
-            return response.text
+        if response and hasattr(response, "text"):
+            return response.text.strip()
 
         return "Resume rewrite failed."
 
-    except Exception as exc:
-        return f"Rewrite failed: {exc}"
+    except Exception as e:
+        return f"Rewrite failed: {e}"
 
 
 # ==========================================================
@@ -239,4 +237,3 @@ if __name__ == "__main__":
     """
 
     print(analyze_resume(sample_resume))
-
