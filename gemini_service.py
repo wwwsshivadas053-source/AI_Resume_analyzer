@@ -1,153 +1,81 @@
 import os
 
-# ==========================================================
-# GEMINI CONFIGURATION (ENVIRONMENT VARIABLE)
-# ==========================================================
 
-model = None
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+HAS_REAL_GEMINI_KEY = GEMINI_API_KEY and GEMINI_API_KEY != "YOUR_GEMINI_API_KEY"
 
-try:
+if HAS_REAL_GEMINI_KEY:
     import google.generativeai as genai
 
-    GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
-
-    if not GEMINI_API_KEY:
-        raise ValueError(
-            "GEMINI_API_KEY environment variable not found."
-        )
-
     genai.configure(api_key=GEMINI_API_KEY)
-
-    # Gemini model
     model = genai.GenerativeModel("gemini-2.5-flash")
-
-except Exception as e:
-    print(f"Gemini initialization failed: {e}")
+else:
     model = None
 
 
-# ==========================================================
-# LOCAL FALLBACK ANALYSIS
-# ==========================================================
-
 def _local_resume_analysis(text):
     lowered = text.lower()
-
     strengths = []
     weaknesses = []
     missing = []
 
     if len(text.split()) >= 350:
-        strengths.append(
-            "Resume has sufficient content for ATS parsing."
-        )
+        strengths.append("Resume has enough detail for ATS parsing.")
     else:
-        weaknesses.append(
-            "Resume is short. Add more project and experience details."
-        )
+        weaknesses.append("Resume looks short; add measurable project and work details.")
 
-    keywords = [
-        "python",
-        "sql",
-        "flask",
-        "machine learning",
-        "javascript",
-        "aws",
-        "html",
-        "css",
-        "git",
-        "github"
-    ]
-
-    for keyword in keywords:
+    for keyword in ["python", "sql", "flask", "machine learning", "javascript", "aws"]:
         if keyword in lowered:
-            strengths.append(f"Includes keyword: {keyword}")
+            strengths.append(f"Includes relevant keyword: {keyword}.")
         else:
             missing.append(keyword)
 
     if not any(char.isdigit() for char in text):
-        weaknesses.append(
-            "Add quantified achievements and measurable results."
-        )
+        weaknesses.append("Add quantified achievements such as percentages, revenue, users, or time saved.")
+
+    if not strengths:
+        strengths.append("Readable resume text was extracted successfully.")
+
+    if not weaknesses:
+        weaknesses.append("Improve role targeting by mirroring high-value job description keywords.")
 
     suggestions = [
-        "Add a professional summary.",
-        "Use action verbs in experience section.",
-        "Include measurable achievements.",
-        "Tailor keywords to the target job description.",
-        "Organize skills into categories."
+        "Add a concise professional summary aligned to the target role.",
+        "Use action verbs and measurable outcomes in every experience bullet.",
+        "Group skills by category so ATS systems can parse them cleanly.",
+        "Include role-specific keywords from the job description naturally."
     ]
 
-    ats_score = max(
-        40,
-        min(
-            95,
-            60 + len(strengths) * 3 - len(weaknesses) * 2
-        )
-    )
-
-    report = f"ATS Score: {ats_score}/100\n\n"
-
-    report += "Strengths:\n"
-    if strengths:
-        for s in strengths:
-            report += f"• {s}\n"
-    else:
-        report += "• None\n"
-
-    report += "\nWeaknesses:\n"
-    if weaknesses:
-        for w in weaknesses:
-            report += f"• {w}\n"
-    else:
-        report += "• None\n"
-
-    report += "\nMissing Skills:\n"
-    if missing:
-        for m in missing:
-            report += f"• {m}\n"
-    else:
-        report += "• No major missing keywords found.\n"
-
-    report += "\nSuggestions:\n"
-    for s in suggestions:
-        report += f"• {s}\n"
-
-    return report
-
-
-# ==========================================================
-# ATS ANALYZER
-# ==========================================================
+    return "\n".join([
+        "Strengths:",
+        *[f"- {item}" for item in strengths[:5]],
+        "",
+        "Weaknesses:",
+        *[f"- {item}" for item in weaknesses[:5]],
+        "",
+        "Missing Skills:",
+        *[f"- {item}" for item in missing[:8]],
+        "",
+        "Suggestions:",
+        *[f"- {item}" for item in suggestions],
+    ])
 
 def analyze_resume(text):
-
-    if not text.strip():
-        return "Resume text is empty."
-
-    if model is None:
+    if not model:
         return _local_resume_analysis(text)
 
     prompt = f"""
-You are an experienced ATS recruiter.
+You are a professional ATS recruiter.
 
-Analyze the following resume.
+Analyze this resume.
 
-Return ONLY in this format:
+Return:
 
-ATS Score: X/100
-
+ATS Score:
 Strengths:
-- ...
-
 Weaknesses:
-- ...
-
 Missing Skills:
-- ...
-
 Suggestions:
-- ...
 
 Resume:
 
@@ -156,84 +84,32 @@ Resume:
 
     try:
         response = model.generate_content(prompt)
-
-        if response and hasattr(response, "text"):
-            return response.text.strip()
-
-        return _local_resume_analysis(text)
-
-    except Exception as e:
-        return (
-            _local_resume_analysis(text)
-            + f"\n\nGemini note: {e}"
-        )
-
-
-# ==========================================================
-# RESUME REWRITER
-# ==========================================================
+        return response.text
+    except Exception as exc:
+        return f"{_local_resume_analysis(text)}\n\nGemini note: {exc}"
 
 def rewrite_resume(text):
-
-    if not text.strip():
-        return "Resume text is empty."
-
-    if model is None:
-        return (
-            "Gemini API unavailable.\n\n"
-            + text
-        )
+    if not model:
+        return "Add a real GEMINI_API_KEY in .env to use AI resume rewriting.\n\n" + text
 
     prompt = f"""
-You are a professional resume writer.
+Rewrite this resume professionally.
 
-Rewrite this resume while:
+Improve:
 
-1. Improving ATS score
-2. Fixing grammar
-3. Adding a strong professional summary
-4. Improving skills section
-5. Improving project descriptions
-6. Improving experience section
-
-Do NOT invent information.
-Keep all original facts.
+- ATS Score
+- Grammar
+- Professional Summary
+- Skills
+- Experience
 
 Resume:
 
 {text}
 """
 
-    try:
-        response = model.generate_content(prompt)
+    response = model.generate_content(
+        prompt
+    )
 
-        if response and hasattr(response, "text"):
-            return response.text.strip()
-
-        return "Resume rewrite failed."
-
-    except Exception as e:
-        return f"Rewrite failed: {e}"
-
-
-# ==========================================================
-# TESTING
-# ==========================================================
-
-if __name__ == "__main__":
-
-    sample_resume = """
-    Prajwal T S
-
-    Python Developer
-
-    Skills:
-    Python, Flask, HTML, CSS, JavaScript, SQL
-
-    Projects:
-    Disease Prediction System
-    Resume Analyzer
-    College Notes RAG Chatbot
-    """
-
-    print(analyze_resume(sample_resume))
+    return response.text
