@@ -19,7 +19,7 @@ try:
     genai.configure(api_key=GEMINI_API_KEY)
 
     # Gemini model
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    model = genai.GenerativeModel("gemini-2.5-flash")
 
 except Exception as e:
     print(f"Gemini initialization failed: {e}")
