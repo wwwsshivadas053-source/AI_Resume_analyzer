@@ -1,13 +1,13 @@
 # 🚀 AI Resume Analyzer
 
 > An AI-powered Resume Analyzer built with **Flask**, **Google Gemini AI**, and **PDF Processing** that evaluates resumes, calculates ATS compatibility, matches resumes with job descriptions, rewrites resumes using AI, and generates downloadable reports.
-<P align="center">
+
 ![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)
 ![Flask](https://img.shields.io/badge/Flask-Web%20Framework-black)
 ![Gemini](https://img.shields.io/badge/Google-Gemini-orange)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Status](https://img.shields.io/badge/Status-Active-success)
-</P>
+
 ---
 
 # 📖 Overview
