@@ -71,9 +71,7 @@ This project demonstrates practical implementation of:
 
 ---
 
-# 📸 Screenshots
-
-Add screenshots here after deployment.
+# 📸 Screenshots.
 
 <img width="1351" height="637" alt="Screenshot 2026-06-26 102419" src="https://github.com/user-attachments/assets/5c169c30-8b49-41d7-b22c-904b3428bb12" />
 
