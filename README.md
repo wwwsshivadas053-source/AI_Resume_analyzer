@@ -75,21 +75,22 @@ This project demonstrates practical implementation of:
 
 Add screenshots here after deployment.
 
-```
-Home Page
+<img width="1351" height="637" alt="Screenshot 2026-06-26 102419" src="https://github.com/user-attachments/assets/5c169c30-8b49-41d7-b22c-904b3428bb12" />
 
-Login Page
+<img width="1347" height="636" alt="Screenshot 2026-06-26 101938" src="https://github.com/user-attachments/assets/e3545879-e914-4237-8ce8-f758b8bcce3b" />
 
-Dashboard
+<img width="1352" height="639" alt="Screenshot 2026-06-26 102034" src="https://github.com/user-attachments/assets/4ecdab7a-d727-49ec-8a42-332b61aa9a3e" />
 
-Resume Analyzer
+<img width="1349" height="639" alt="Screenshot 2026-06-26 102151" src="https://github.com/user-attachments/assets/9fdc9a4d-d004-4318-bb0e-b3baf781906a" />
 
-AI Suggestions
+<img width="1352" height="638" alt="Screenshot 2026-06-26 104016" src="https://github.com/user-attachments/assets/d1c22eec-f21e-44f0-aa9a-38400a748d83" />
 
-PDF Report
+<img width="1351" height="636" alt="Screenshot 2026-06-26 104059" src="https://github.com/user-attachments/assets/9fbb017a-6183-485f-a906-b352334f3fb1" />
 
-Admin Dashboard
-```
+<img width="1364" height="637" alt="Screenshot 2026-06-26 102315" src="https://github.com/user-attachments/assets/dd7387a9-8813-414f-a161-79b090441359" />
+
+<img width="1351" height="639" alt="Screenshot 2026-06-26 104203" src="https://github.com/user-attachments/assets/48fa12a4-1365-49b2-b102-86336a72e453" />
+
 
 ---
 
